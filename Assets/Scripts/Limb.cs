@@ -27,8 +27,12 @@ public class Limb : MonoBehaviour
 
     public void StartExtending(Transform directionArrow)
     {
-        gameObject.transform.rotation = GameUtils.GetAngleToMouse(directionArrow);
-        gameObject.SetActive(true);
+        if(IsRetracted)
+        {
+            gameObject.transform.rotation = GameUtils.GetAngleToMouse(directionArrow);
+            gameObject.SetActive(true);
+        }
+        
         _limbState = LimbState.EXTENDING;
     }
 
