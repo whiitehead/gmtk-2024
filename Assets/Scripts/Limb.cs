@@ -1,27 +1,35 @@
 using UnityEngine;
 
+
+public enum LimbState
+{
+    RETRACTED,
+    EXTENDING,
+    EXTENDED,
+    RETRACTING,
+}
+
 public class Limb : MonoBehaviour
 {
     [SerializeField] private Transform _limbExtension;
 
-    private bool _preparedToExtend = false;
+    private LimbState _limbState = LimbState.RETRACTED;
+
+    public bool IsRetracted => _limbState == LimbState.RETRACTED;
+    public bool IsExtending => _limbState == LimbState.EXTENDING;
+    public bool IsExtended => _limbState == LimbState.EXTENDED;
+    public bool IsRetracting => _limbState == LimbState.RETRACTING;
 
     private void Awake()
     {
-        RetractLimb();
+        StartRetracting();
     }
 
-    public void PrepareToExtend(Transform directionArrow)
+    public void StartExtending(Transform directionArrow)
     {
-        if(_preparedToExtend)
-        {
-            return;
-        }
-
-        _preparedToExtend = true;
-
         gameObject.transform.rotation = GameUtils.GetAngleToMouse(directionArrow);
         gameObject.SetActive(true);
+        _limbState = LimbState.EXTENDING;
     }
 
     public void ExtendLimb(float delta)
@@ -30,9 +38,19 @@ public class Limb : MonoBehaviour
         _limbExtension.localScale = new Vector3(_limbExtension.localScale.x, newLength, _limbExtension.localScale.z);
     }
 
-    public void RetractLimb()
+    public void StopExtending()
+    {
+        _limbState = LimbState.EXTENDED;
+    }
+
+    public void StartRetracting()
     {
         _limbExtension.localScale = new Vector3(_limbExtension.localScale.x, 0f, _limbExtension.localScale.z);
-        _preparedToExtend = false;
+        _limbState = LimbState.RETRACTED; //TODO: make the limb visual retract
+    }
+
+    public void StopRetracting()
+    {
+        _limbState = LimbState.RETRACTED;
     }
 }

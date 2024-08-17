@@ -49,46 +49,32 @@ public class PlayerController : MonoBehaviour
 
     private void HandleButtonInputs()
     {
-        if (Input.GetMouseButtonDown(0))
+        foreach (KeyCode limbKey in LIMB_KEYS)
         {
-            _isExtending = true;
-        }
+            Limb currentLimb = _limbMap[limbKey];
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            _isExtending = false;
-        }
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            _isRetracting = true;
-        }
-
-        if (Input.GetMouseButtonUp(1))
-        {
-            _isRetracting = false;
-        }
-
-        if (_isExtending)
-        {
-            foreach (KeyCode limbKey in LIMB_KEYS)
+            if (Input.GetKeyDown(limbKey))
             {
-                if (Input.GetKey(limbKey))
+                if(currentLimb.IsExtended)
                 {
-                    _limbMap[limbKey].PrepareToExtend(this.transform);
-                    _limbMap[limbKey].ExtendLimb(_limbGrowthRate);
+                    currentLimb.StartRetracting();
+                }
+                else if(currentLimb.IsRetracted)
+                {
+                    currentLimb.StartExtending(this.transform);
                 }
             }
-        }
 
-        if (_isRetracting)
-        {
-            foreach (KeyCode limbKey in LIMB_KEYS)
+            if(currentLimb.IsExtending)
             {
-                if (Input.GetKey(limbKey))
+                currentLimb.ExtendLimb(_limbGrowthRate);
+            }
+
+            if(Input.GetKeyUp(limbKey))
+            {
+                if(currentLimb.IsExtending)
                 {
-                    _limbMap[limbKey].gameObject.SetActive(false);
-                    _limbMap[limbKey].RetractLimb();
+                    currentLimb.StopExtending();
                 }
             }
         }
