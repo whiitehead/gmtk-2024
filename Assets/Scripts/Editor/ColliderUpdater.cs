@@ -26,8 +26,8 @@ public class ColliderUpdater : EditorWindow
 
             if (collider is null)
             {
-                Debug.LogWarning("No collider on game object.");
-                return;
+                collider = selectedGameObject.AddComponent<PolygonCollider2D>();
+                collider.useDelaunayMesh = true;
             }
 
             var sprite = selectedGameObject.GetComponent<SpriteRenderer>()?.sprite;
