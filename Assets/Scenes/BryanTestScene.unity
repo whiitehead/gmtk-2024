@@ -1303,6 +1303,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2332857126182119449, guid: c88f7f423e49cc84b975c101db37f1e2, type: 3}
+      propertyPath: _limbRetractRate
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5555891934188654191, guid: c88f7f423e49cc84b975c101db37f1e2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

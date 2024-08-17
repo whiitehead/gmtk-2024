@@ -22,7 +22,20 @@ public class Limb : MonoBehaviour
 
     private void Awake()
     {
-        StartRetracting();
+        StopRetracting();
+    }
+
+    public void AdjustLimbLength(float delta)
+    {
+        float newLength = _limbExtension.localScale.y + delta;
+
+        if(newLength <= 0)
+        {
+            newLength = 0;
+            StopRetracting();
+        }
+
+        _limbExtension.localScale = new Vector3(_limbExtension.localScale.x, newLength, _limbExtension.localScale.z);
     }
 
     public void StartExtending(Transform directionArrow)
@@ -36,12 +49,6 @@ public class Limb : MonoBehaviour
         _limbState = LimbState.EXTENDING;
     }
 
-    public void ExtendLimb(float delta)
-    {
-        float newLength = _limbExtension.localScale.y + delta;
-        _limbExtension.localScale = new Vector3(_limbExtension.localScale.x, newLength, _limbExtension.localScale.z);
-    }
-
     public void StopExtending()
     {
         _limbState = LimbState.EXTENDED;
@@ -49,8 +56,7 @@ public class Limb : MonoBehaviour
 
     public void StartRetracting()
     {
-        _limbExtension.localScale = new Vector3(_limbExtension.localScale.x, 0f, _limbExtension.localScale.z);
-        _limbState = LimbState.RETRACTED; //TODO: make the limb visual retract
+        _limbState = LimbState.RETRACTING;
     }
 
     public void StopRetracting()
