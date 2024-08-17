@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     public static readonly KeyCode[] LIMB_KEYS = {KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F};
 
     private bool _isExtending = false;
-    private bool _isRetracting = false;
+    private bool _retractButtonPressed = false;
     
     private void Awake()
     {
@@ -47,19 +47,35 @@ public class PlayerController : MonoBehaviour
         _directionArrow.rotation = GameUtils.GetAngleToMouse(_directionArrow);
     }
 
+
+/// <summary>
+/// Press and hold keyboard keys to grow individual limbs
+/// Press keys again to continue growing limbs
+/// Press Mouse Left Click and keyboard keys to instantly retract individual limbs 
+/// </summary>
     private void HandleButtonInputs()
     {
+        if(Input.GetMouseButtonDown(0))
+        {
+            _retractButtonPressed = true;
+        }
+        else if(Input.GetMouseButtonUp(0))
+        {
+            _retractButtonPressed = false;
+        }
+
+
         foreach (KeyCode limbKey in LIMB_KEYS)
         {
             Limb currentLimb = _limbMap[limbKey];
 
             if (Input.GetKeyDown(limbKey))
             {
-                if(currentLimb.IsExtended)
+                if(_retractButtonPressed)
                 {
                     currentLimb.StartRetracting();
                 }
-                else if(currentLimb.IsRetracted)
+                else if(currentLimb.IsExtended || currentLimb.IsRetracted)
                 {
                     currentLimb.StartExtending(this.transform);
                 }
@@ -68,6 +84,11 @@ public class PlayerController : MonoBehaviour
             if(currentLimb.IsExtending)
             {
                 currentLimb.ExtendLimb(_limbGrowthRate);
+            }
+
+            if(currentLimb.IsRetracting)
+            {
+                //TODO: make the limb quickly retract
             }
 
             if(Input.GetKeyUp(limbKey))
