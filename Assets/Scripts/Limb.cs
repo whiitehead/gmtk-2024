@@ -1,22 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Limb : MonoBehaviour
 {
     [SerializeField] private Transform _limbExtension;
-    //[SerializeField] private FixedJoint2D _fixedJoint;
 
     private bool _preparedToExtend = false;
 
     private void Awake()
     {
         RetractLimb();
-    }
-
-    public void ConnectToBody(Rigidbody2D mainBody)
-    {
-        //_fixedJoint.connectedBody = mainBody;
     }
 
     public void PrepareToExtend(Transform directionArrow)

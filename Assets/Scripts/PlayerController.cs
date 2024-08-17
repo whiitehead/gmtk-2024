@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Tweakables")]
     [SerializeField] private float _limbGrowthRate = 0.05f;
-    [SerializeField] private int _maxLimbs = 4;
+    private const int _maxLimbs = 4; //TODO: Make this serialized again once pooling works
 
     [Header("References")]
     [SerializeField] private GameObject _limbPrefab;
@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _directionArrow; //TODO: replace with eyes
     
     private Dictionary<KeyCode, Limb> _limbMap = new Dictionary<KeyCode, Limb>();
-    private KeyCode[] _limbKeys = {KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F};
+    public static readonly KeyCode[] LIMB_KEYS = {KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F};
 
     private bool _isExtending = false;
     private bool _isRetracting = false;
@@ -29,9 +29,8 @@ public class PlayerController : MonoBehaviour
             limbGameObject.transform.SetParent(_limbsParent);
 
             Limb newLimb = limbGameObject.GetComponent<Limb>();
-            newLimb.ConnectToBody(_rigidbody);
 
-            _limbMap.Add(_limbKeys[i], newLimb);
+            _limbMap.Add(LIMB_KEYS[i], newLimb);
             limbGameObject.SetActive(false);
         }
     }
@@ -72,7 +71,7 @@ public class PlayerController : MonoBehaviour
 
         if (_isExtending)
         {
-            foreach (KeyCode limbKey in _limbKeys)
+            foreach (KeyCode limbKey in LIMB_KEYS)
             {
                 if (Input.GetKey(limbKey))
                 {
@@ -84,7 +83,7 @@ public class PlayerController : MonoBehaviour
 
         if (_isRetracting)
         {
-            foreach (KeyCode limbKey in _limbKeys)
+            foreach (KeyCode limbKey in LIMB_KEYS)
             {
                 if (Input.GetKey(limbKey))
                 {
