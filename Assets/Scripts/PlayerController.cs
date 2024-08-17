@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Tweakables")]
     [SerializeField] private float _limbGrowthRate = 0.05f;
+    [SerializeField] private float _limbRetractRate = 1f;
     private const int _maxLimbs = 4; //TODO: Make this serialized again once pooling works
 
     [Header("References")]
@@ -80,24 +81,22 @@ public class PlayerController : MonoBehaviour
                     currentLimb.StartExtending(this.transform);
                 }
             }
-
-            if(currentLimb.IsExtending)
-            {
-                currentLimb.ExtendLimb(_limbGrowthRate);
-            }
-
-            if(currentLimb.IsRetracting)
-            {
-                //TODO: make the limb quickly retract
-            }
-
-            if(Input.GetKeyUp(limbKey))
+            else if(Input.GetKeyUp(limbKey))
             {
                 if(currentLimb.IsExtending)
                 {
                     currentLimb.StopExtending();
                 }
             }
+
+            if(currentLimb.IsExtending)
+            {
+                currentLimb.AdjustLimbLength(_limbGrowthRate);
+            }
+            else if(currentLimb.IsRetracting)
+            {
+                currentLimb.AdjustLimbLength(-1 * _limbRetractRate);
+            }            
         }
     }
 }

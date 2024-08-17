@@ -251,8 +251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6ea5fcc1b145b944a288d99250d0e96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _limbGrowthRate: 0.05
-  _maxLimbs: 4
+  _limbGrowthRate: 0.005
+  _limbRetractRate: 0.1
   _limbPrefab: {fileID: 8003743324913104346, guid: 18977da270f1a4e42ba60b2ab492557a, type: 3}
   _limbsParent: {fileID: 5763782115779259021}
   _rigidbody: {fileID: 3238864790230502345}
