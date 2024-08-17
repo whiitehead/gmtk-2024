@@ -77,7 +77,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac7532eb2abba524287b3afa621693b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _limbExtension: {fileID: 7521756167564778262}
+  _limbSprite: {fileID: 2141618286584335125}
 --- !u!1 &8408757016817173642
 GameObject:
   m_ObjectHideFlags: 0

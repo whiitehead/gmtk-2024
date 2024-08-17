@@ -80,6 +80,8 @@ public class PlayerController : MonoBehaviour
                 {
                     currentLimb.StartExtending(this.transform);
                 }
+
+                currentLimb.ToggleHighlight(true);
             }
             else if(Input.GetKeyUp(limbKey))
             {
@@ -87,6 +89,8 @@ public class PlayerController : MonoBehaviour
                 {
                     currentLimb.StopExtending();
                 }
+
+                currentLimb.ToggleHighlight(false);
             }
 
             if(currentLimb.IsExtending)

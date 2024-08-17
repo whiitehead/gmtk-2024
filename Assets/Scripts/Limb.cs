@@ -11,8 +11,14 @@ public enum LimbState
 
 public class Limb : MonoBehaviour
 {
-    [SerializeField] private Transform _limbExtension;
+    [Header("Tweakables")]
+    [SerializeField] private Color _highlightColor = Color.yellow;
 
+    [Header("UI Elements")]
+    [SerializeField] private Transform _limbExtension;
+    [SerializeField] private SpriteRenderer _limbSprite;
+
+    private Color _originalColor;
     private LimbState _limbState = LimbState.RETRACTED;
 
     public bool IsRetracted => _limbState == LimbState.RETRACTED;
@@ -23,6 +29,12 @@ public class Limb : MonoBehaviour
     private void Awake()
     {
         StopRetracting();
+        _originalColor = _limbSprite.color;
+    }
+
+    public void ToggleHighlight(bool enabled)
+    {
+        _limbSprite.color = enabled ? _highlightColor : _originalColor;
     }
 
     public void AdjustLimbLength(float delta)
