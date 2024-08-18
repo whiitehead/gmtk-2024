@@ -937,6 +937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6ea5fcc1b145b944a288d99250d0e96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _growingUnitsMaximum: 2000
   _limbGrowthRate: 0.005
   _limbRetractRate: 0.1
   _bodySizeMaximum: 0.5

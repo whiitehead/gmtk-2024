@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Tweakables")]
+    [SerializeField] private int _growingUnitsMaximum = 10000;
     [SerializeField] private float _limbGrowthRate = 0.05f;
     [SerializeField] private float _limbRetractRate = 1f;
     [SerializeField] private float _bodySizeMaximum = 0.25f;
@@ -24,11 +25,9 @@ public class PlayerController : MonoBehaviour
     private bool _forceRetractAllLimbs = false;
     private bool _retractButtonPressed = false;
 
-    private float _currentBodyScale = 0f;
+    private int _growingUnitsCurrent = 0;
 
-
-    private int _growingUnitsMaximum = 100;
-    private int _growingUnitsCurrent = 100;
+    private float _bodyScaleGrowthRate;
     
     private void Awake()
     {
@@ -50,7 +49,8 @@ public class PlayerController : MonoBehaviour
             limbGameObject.SetActive(false);
         }
 
-        _currentBodyScale = _bodySizeMaximum;
+        _bodyScaleGrowthRate = (_bodySizeMaximum - _bodySizeMinimum) / _growingUnitsMaximum;
+        _growingUnitsCurrent = _growingUnitsMaximum;
     }
 
     private void GenerateAllLimbKeys()
@@ -133,6 +133,8 @@ public class PlayerController : MonoBehaviour
             {
                 currentLimb.StartRetracting();
                 currentLimb.AdjustLimbLength(-1 * _limbRetractRate);
+                _growingUnitsCurrent = _growingUnitsMaximum;
+                ChangeBodyScale(_bodySizeMaximum);
                 continue;
             }
 
@@ -142,7 +144,7 @@ public class PlayerController : MonoBehaviour
                 {
                     currentLimb.StartRetracting();
                 }
-                else if(currentLimb.IsExtended || currentLimb.IsRetracted)
+                else if( _growingUnitsCurrent > 0 && (currentLimb.IsExtended || currentLimb.IsRetracted))
                 {
                     currentLimb.StartExtending(this.transform);
                 }
@@ -158,18 +160,20 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            if(currentLimb.IsExtending)
+            if(currentLimb.IsExtending && _growingUnitsCurrent > 0)
             {
                 currentLimb.AdjustLimbLength(_limbGrowthRate);
                 currentLimb.GrowingUnits++;
                 _growingUnitsCurrent--;
+                ChangeBodyScale(-1 * _bodyScaleGrowthRate);
             }
             else if(currentLimb.IsRetracting)
             {
                 currentLimb.AdjustLimbLength(-1 * _limbRetractRate);
                 _growingUnitsCurrent += currentLimb.GrowingUnits;
+                ChangeBodyScale(currentLimb.GrowingUnits * _bodyScaleGrowthRate);
                 currentLimb.GrowingUnits = 0;
-            }   
+            }
         }
     }
 }
