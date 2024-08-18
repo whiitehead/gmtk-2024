@@ -315,6 +315,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2332857126182119449, guid: f82b88d35407946788009e8edf80f4c8, type: 3}
+      propertyPath: _limbRetractRate
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332857126182119449, guid: f82b88d35407946788009e8edf80f4c8, type: 3}
+      propertyPath: _growingUnitsMaximum
+      value: 1500
+      objectReference: {fileID: 0}
     - target: {fileID: 5555891934188654191, guid: f82b88d35407946788009e8edf80f4c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -500,7 +508,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &481809104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4263,13 +4271,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 97095469161784946, guid: bcf548c90af3a4bb4aab29b8b9268b59, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: cedf721a27586b84c89d50f4002e9cd6, type: 3}
     - target: {fileID: 6597581037514827431, guid: bcf548c90af3a4bb4aab29b8b9268b59, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 35.26
+      value: 37.79
       objectReference: {fileID: 0}
     - target: {fileID: 6597581037514827431, guid: bcf548c90af3a4bb4aab29b8b9268b59, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 53.94
+      value: 53.52
       objectReference: {fileID: 0}
     - target: {fileID: 6597581037514827431, guid: bcf548c90af3a4bb4aab29b8b9268b59, type: 3}
       propertyPath: m_LocalPosition.z
