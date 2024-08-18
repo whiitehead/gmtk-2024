@@ -9,20 +9,26 @@ public class PlayerController : MonoBehaviour
     [Header("Tweakables")]
     [SerializeField] private float _limbGrowthRate = 0.05f;
     [SerializeField] private float _limbRetractRate = 1f;
+    [SerializeField] private float _bodySizeMaximum = 0.25f;
+    [SerializeField] private float _bodySizeMinimum = 0.1f;
 
     [Header("References")]
     [SerializeField] private GameObject _limbPrefab;
     [SerializeField] private Transform _limbsParent;
-    [SerializeField] private Rigidbody2D _rigidbody;
-    [SerializeField] private ObjectPool _limbPool;
+    [SerializeField] private Transform _bodyScale;
     
     private Dictionary<KeyCode, Limb> _limbMap = new Dictionary<KeyCode, Limb>();
 
     [HideInInspector] public KeyCode[] AllLimbKeys = null;
-    //public static readonly KeyCode[] LIMB_KEYS = {KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F};
 
     private bool _forceRetractAllLimbs = false;
     private bool _retractButtonPressed = false;
+
+    private float _currentBodyScale = 0f;
+
+
+    private int _growingUnitsMaximum = 100;
+    private int _growingUnitsCurrent = 100;
     
     private void Awake()
     {
@@ -36,13 +42,15 @@ public class PlayerController : MonoBehaviour
             }
 
             GameObject limbGameObject = Instantiate(_limbPrefab);
-            limbGameObject.transform.SetParent(_limbsParent);
+            limbGameObject.transform.SetParent(_limbsParent, false);
 
             Limb newLimb = limbGameObject.GetComponent<Limb>();
 
             _limbMap.Add(AllLimbKeys[i], newLimb);
             limbGameObject.SetActive(false);
         }
+
+        _currentBodyScale = _bodySizeMaximum;
     }
 
     private void GenerateAllLimbKeys()
@@ -78,6 +86,13 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleButtonInputs();
+    }
+
+    private void ChangeBodyScale(float delta)
+    {
+        float oldScale = _bodyScale.transform.localScale.x;
+        float newScale = Mathf.Clamp(oldScale + delta, _bodySizeMinimum, _bodySizeMaximum);
+        _bodyScale.transform.localScale = new Vector3(newScale, newScale);
     }
 
 
@@ -146,10 +161,14 @@ public class PlayerController : MonoBehaviour
             if(currentLimb.IsExtending)
             {
                 currentLimb.AdjustLimbLength(_limbGrowthRate);
+                currentLimb.GrowingUnits++;
+                _growingUnitsCurrent--;
             }
             else if(currentLimb.IsRetracting)
             {
                 currentLimb.AdjustLimbLength(-1 * _limbRetractRate);
+                _growingUnitsCurrent += currentLimb.GrowingUnits;
+                currentLimb.GrowingUnits = 0;
             }   
         }
     }

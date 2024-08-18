@@ -26,6 +26,8 @@ public class Limb : MonoBehaviour
     public bool IsExtended => _limbState == LimbState.EXTENDED;
     public bool IsRetracting => _limbState == LimbState.RETRACTING;
 
+    public int GrowingUnits = 0;
+
     private void Awake()
     {
         StopRetracting();
