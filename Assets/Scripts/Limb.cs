@@ -68,11 +68,15 @@ public class Limb : MonoBehaviour
 
     public void StartRetracting()
     {
-        _limbState = LimbState.RETRACTING;
+        if(_limbState != LimbState.RETRACTED)
+        {
+            _limbState = LimbState.RETRACTING;
+        }
     }
 
     public void StopRetracting()
     {
         _limbState = LimbState.RETRACTED;
+        this.gameObject.SetActive(false); //This will return the Limb to the ObjectPool
     }
 }

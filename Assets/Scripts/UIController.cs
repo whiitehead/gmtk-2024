@@ -17,10 +17,10 @@ public class UIController : MonoBehaviour
 
     void Update()
     {
-        for(int i = 0; i < 4; i++)
-        {
-            bool pressed = Input.GetKey(PlayerController.LIMB_KEYS[i]);
-            _keyIcons[i].TogglePressed(pressed);
-        }
+        // for(int i = 0; i < 4; i++)
+        // {
+        //     bool pressed = Input.GetKey(PlayerController.LIMB_KEYS[i]);
+        //     _keyIcons[i].TogglePressed(pressed);
+        // }
     }
 }

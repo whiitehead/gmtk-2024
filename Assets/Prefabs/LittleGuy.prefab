@@ -257,6 +257,8 @@ MonoBehaviour:
   _limbsParent: {fileID: 5763782115779259021}
   _rigidbody: {fileID: 3238864790230502345}
   _directionArrow: {fileID: 8177178876207440649}
+  _limbPool: {fileID: 0}
+  AllLimbKeys: 
 --- !u!50 &3238864790230502345
 Rigidbody2D:
   serializedVersion: 4
