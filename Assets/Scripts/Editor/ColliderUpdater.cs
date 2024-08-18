@@ -30,26 +30,27 @@ public class ColliderUpdater : EditorWindow
             
         var collider = selectedGameObject.GetComponent<PolygonCollider2D>();
 
-        if (collider is null)
+        if (collider != null)
         {
-            Debug.LogWarning("No collider on game object.");
-            return;
+            DestroyImmediate(collider);
         }
-            
+
+        collider = selectedGameObject.AddComponent<PolygonCollider2D>();
         collider.useDelaunayMesh = true;
+        
 
-        var sprite = selectedGameObject.GetComponent<SpriteRenderer>()?.sprite;
+        // var sprite = selectedGameObject.GetComponent<SpriteRenderer>()?.sprite;
 
-        if (sprite is null || sprite.GetPhysicsShapeCount() <= 0)
-        {
-            Debug.LogWarning("No valid sprite on object.");
-            return;
-        }
-
-        var physicsShape = new List<Vector2>(sprite.GetPhysicsShapePointCount(0));
-            
-        sprite.GetPhysicsShape(0, physicsShape);
-        collider.SetPath(0, physicsShape);
+        // if (sprite is null || sprite.GetPhysicsShapeCount() <= 0)
+        // {
+        //     Debug.LogWarning("No valid sprite on object.");
+        //     return;
+        // }
+        //
+        // var physicsShape = new List<Vector2>(sprite.GetPhysicsShapePointCount(0));
+        //     
+        // sprite.GetPhysicsShape(0, physicsShape);
+        // collider.SetPath(0, physicsShape);
     }
     
 }
