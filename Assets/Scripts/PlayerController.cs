@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject _limbPrefab;
     [SerializeField] private Transform _limbsParent;
     [SerializeField] private Rigidbody2D _rigidbody;
-    [SerializeField] private Transform _directionArrow; //TODO: replace with eyes
     [SerializeField] private ObjectPool _limbPool;
     
     private Dictionary<KeyCode, Limb> _limbMap = new Dictionary<KeyCode, Limb>();
@@ -58,7 +57,15 @@ public class PlayerController : MonoBehaviour
 
         foreach(KeyCode keyCode in allKeys)
         {
+            // Ignore all Mouse and Joystick inputs
             if(keyCode >= KeyCode.Mouse0)
+            {
+                break;
+            }
+
+            // Ignore the Windows keys
+            if(keyCode == KeyCode.LeftWindows || keyCode == KeyCode.RightWindows
+             || keyCode == KeyCode.LeftMeta || keyCode == KeyCode.RightMeta)
             {
                 break;
             }
@@ -70,14 +77,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        PointArrowToMouse();
-
         HandleButtonInputs();
-    }
-
-    private void PointArrowToMouse()
-    {
-        _directionArrow.rotation = GameUtils.GetAngleToMouse(_directionArrow);
     }
 
 
@@ -89,6 +89,7 @@ public class PlayerController : MonoBehaviour
 /// </summary>
     private void HandleButtonInputs()
     {
+        // Left Click
         if(Input.GetMouseButtonDown(0))
         {
             _retractButtonPressed = true;
@@ -98,6 +99,7 @@ public class PlayerController : MonoBehaviour
             _retractButtonPressed = false;
         }
 
+        // Right Click
         if(Input.GetMouseButtonDown(1))
         {
             _forceRetractAllLimbs = true;
