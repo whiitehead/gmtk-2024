@@ -220,7 +220,7 @@ GameObject:
   m_Layer: 0
   m_Name: EventCollider
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -548,7 +548,7 @@ Transform:
   m_GameObject: {fileID: 123231496}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -833,6 +833,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3716890692428043796, guid: 42ca4bf18aa9e4ca1bd9c834e34d8beb, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3823332547549005234, guid: 42ca4bf18aa9e4ca1bd9c834e34d8beb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 09edef950d9675c41ab7ff7b1a1ec4b9, type: 3}
     - target: {fileID: 6300711494589755959, guid: 42ca4bf18aa9e4ca1bd9c834e34d8beb, type: 3}
       propertyPath: m_Name
       value: PowerUp100
@@ -938,7 +946,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &237141991
 Transform:
   m_ObjectHideFlags: 0
@@ -2462,6 +2470,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3716890692428043796, guid: 42ca4bf18aa9e4ca1bd9c834e34d8beb, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3823332547549005234, guid: 42ca4bf18aa9e4ca1bd9c834e34d8beb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 09edef950d9675c41ab7ff7b1a1ec4b9, type: 3}
     - target: {fileID: 6300711494589755959, guid: 42ca4bf18aa9e4ca1bd9c834e34d8beb, type: 3}
       propertyPath: m_Name
       value: PowerUp400
@@ -3386,6 +3402,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3716890692428043796, guid: 42ca4bf18aa9e4ca1bd9c834e34d8beb, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3823332547549005234, guid: 42ca4bf18aa9e4ca1bd9c834e34d8beb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 09edef950d9675c41ab7ff7b1a1ec4b9, type: 3}
     - target: {fileID: 6300711494589755959, guid: 42ca4bf18aa9e4ca1bd9c834e34d8beb, type: 3}
       propertyPath: m_Name
       value: PowerUp200
@@ -10409,6 +10433,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3716890692428043796, guid: 42ca4bf18aa9e4ca1bd9c834e34d8beb, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3823332547549005234, guid: 42ca4bf18aa9e4ca1bd9c834e34d8beb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 09edef950d9675c41ab7ff7b1a1ec4b9, type: 3}
     - target: {fileID: 6300711494589755959, guid: 42ca4bf18aa9e4ca1bd9c834e34d8beb, type: 3}
       propertyPath: m_Name
       value: PowerUp300
