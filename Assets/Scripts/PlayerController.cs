@@ -25,7 +25,8 @@ public class PlayerController : MonoBehaviour
     private bool _forceRetractAllLimbs = false;
     private bool _retractButtonPressed = false;
 
-    private int _growingUnitsCurrent = 0;
+    // Exposed to Inspector for debugging
+    [SerializeField] private int _growingUnitsCurrent = 0;
 
     private float _bodyScaleGrowthRate;
 
@@ -51,9 +52,24 @@ public class PlayerController : MonoBehaviour
             _limbMap.Add(AllLimbKeys[i], newLimb);
             limbGameObject.SetActive(false);
         }
-
-        _bodyScaleGrowthRate = (_bodySizeMaximum - _bodySizeMinimum) / _growingUnitsMaximum;
+        AdjustGrowingUnitsMaximum(0);
         _growingUnitsCurrent = _growingUnitsMaximum;
+    }
+
+    private void AdjustGrowingUnitsMaximum(int additionalUnits)
+    {
+        _growingUnitsMaximum += additionalUnits;
+        _bodyScaleGrowthRate = (_bodySizeMaximum - _bodySizeMinimum) / _growingUnitsMaximum;
+    }
+    
+    private void ChangeBodyScale(int growingUnitsDelta)
+    {
+        _growingUnitsCurrent = Mathf.Clamp(_growingUnitsCurrent + growingUnitsDelta, 0, _growingUnitsMaximum);
+        
+        float oldScaleAmount = _bodyScale.transform.localScale.x;
+        float newScaleDelta = _bodyScaleGrowthRate * growingUnitsDelta;
+        float newScaleAmount = Mathf.Clamp(oldScaleAmount + newScaleDelta, _bodySizeMinimum, _bodySizeMaximum);
+        _bodyScale.transform.localScale = new Vector3(newScaleAmount, newScaleAmount);
     }
 
     private void GenerateAllLimbKeys()
@@ -95,8 +111,7 @@ public class PlayerController : MonoBehaviour
             {
                 extendingLimb.AdjustLimbLength(_limbGrowthRate);
                 extendingLimb.GrowingUnits++;
-                _growingUnitsCurrent--;
-                ChangeBodyScale(-1 * _bodyScaleGrowthRate);
+                ChangeBodyScale(-1);
             }
         }
 
@@ -107,8 +122,7 @@ public class PlayerController : MonoBehaviour
             
             if(retractingLimb.GrowingUnits > 0)
             {
-                _growingUnitsCurrent += retractingLimb.GrowingUnits;
-                ChangeBodyScale(retractingLimb.GrowingUnits * _bodyScaleGrowthRate);
+                ChangeBodyScale(retractingLimb.GrowingUnits);
                 retractingLimb.GrowingUnits = 0;
             }
 
@@ -125,13 +139,6 @@ public class PlayerController : MonoBehaviour
         HandleButtonInputs();
     }
 
-    private void ChangeBodyScale(float delta)
-    {
-        float oldScale = _bodyScale.transform.localScale.x;
-        float newScale = Mathf.Clamp(oldScale + delta, _bodySizeMinimum, _bodySizeMaximum);
-        _bodyScale.transform.localScale = new Vector3(newScale, newScale);
-    }
-
 
 /// <summary>
 /// Press and hold keyboard keys to grow individual limbs
@@ -141,20 +148,8 @@ public class PlayerController : MonoBehaviour
 /// </summary>
     private void HandleButtonInputs()
     {
-        
-        
         // Left Click
         _retractButtonPressed = Input.GetMouseButton(0);
-        // if(Input.GetMouseButtonDown(0))
-        // {
-        //     _retractButtonPressed = true;
-        //     Debug.Log("_retractButtonPressed TRUE");
-        // }
-        // else if(Input.GetMouseButtonUp(0))
-        // {
-        //     _retractButtonPressed = false;
-        //     Debug.Log("_retractButtonPressed FALSE");
-        // }
 
         // Right Click
         if(Input.GetMouseButtonDown(1))
@@ -178,8 +173,7 @@ public class PlayerController : MonoBehaviour
                 
                 _limbsToExtend.Clear();
                 currentLimb.GrowingUnits = 0;
-                _growingUnitsCurrent = _growingUnitsMaximum;
-                ChangeBodyScale(_bodySizeMaximum);
+                ChangeBodyScale(_growingUnitsMaximum);
                 continue;
             }
 
@@ -213,6 +207,22 @@ public class PlayerController : MonoBehaviour
         if (_forceRetractAllLimbs)
         {
             _forceRetractAllLimbs = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col == null)
+        {
+            return;
+        }
+        
+        PowerUp powerUp = col.gameObject.GetComponent<PowerUp>();
+        if (powerUp != null)
+        {
+            AdjustGrowingUnitsMaximum(powerUp.BodyUnitsRewarded);
+            ChangeBodyScale(powerUp.BodyUnitsRewarded);
+            Destroy(powerUp.gameObject);
         }
     }
 }
