@@ -17,6 +17,8 @@ public class CameraController : MonoBehaviour
     public GameObject Guy;
     [Tooltip("Height of the viewport in world space unit")]
     public float DefaultSize = 15.0f;
+    [Tooltip("Height of viewport for the Intro")]
+    public float IntroSize = 5.0f;
     [Tooltip("Viewport height change in units per second")]
     public float ZoomSpeed = 5.0f;
     [Tooltip("Units per second")]
@@ -40,12 +42,21 @@ public class CameraController : MonoBehaviour
     private Vector2 _target;
     private float _targetSize;
     private Camera _camera;
-    
+
+    private float _defaultSize;
+
     private void Start()
     {
-        _targetSize = DefaultSize;
+        _defaultSize = IntroSize;
+        _targetSize = IntroSize;
         _camera = GetComponent<Camera>();
-        _camera.orthographicSize = DefaultSize;
+        _camera.orthographicSize = IntroSize;
+    }
+
+    public void EndIntro()
+    {
+        _defaultSize = DefaultSize;
+        _targetSize = DefaultSize;
     }
 
     private void LateUpdate()
@@ -73,7 +84,7 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            _targetSize = DefaultSize;
+            _targetSize = _defaultSize;
         }
         
         MoveTowardsTarget();

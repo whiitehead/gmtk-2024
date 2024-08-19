@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int _growingUnitsCurrent = 0;
 
     private float _bodyScaleGrowthRate;
+    public bool IsInIntroState;
 
     private List<Limb> _limbsToExtend = new List<Limb>();
     private List<Limb> _limbsToRetract = new List<Limb>();
@@ -40,6 +41,8 @@ public class PlayerController : MonoBehaviour
 
         AdjustGrowingUnitsMaximum(0);
         _growingUnitsCurrent = _growingUnitsMaximum;
+
+        IsInIntroState = true;
     }
 
     private void InstantiateLimbs()
@@ -111,6 +114,11 @@ public class PlayerController : MonoBehaviour
 // can run once, zero, or several times per frame, depending on how many physics frames per second are set in the time settings, and how fast/slow the framerate is.
     private void FixedUpdate()
     {
+        if(IsInIntroState)
+        {
+            return;
+        }
+
         if(_growingUnitsCurrent > 0)
         {
             foreach(Limb extendingLimb in _limbsToExtend)
@@ -142,7 +150,32 @@ public class PlayerController : MonoBehaviour
 //Called EVERY frame
     private void Update()
     {
-        HandleButtonInputs();
+        if(!IsInIntroState)
+        {
+            HandleButtonInputs();
+        }
+        else
+        {
+            CheckIntroInputs();
+        }
+    }
+
+    private void CheckIntroInputs()
+    {
+        if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+        {
+            IsInIntroState = false;
+            return;
+        }
+
+        foreach (KeyCode limbKey in AllLimbKeys)
+        {
+            if (Input.GetKeyDown(limbKey))
+            {
+                IsInIntroState = false;
+                return;
+            }
+        }
     }
 
 
@@ -233,11 +266,11 @@ public class PlayerController : MonoBehaviour
             Destroy(powerUp.gameObject);
         }
         
-        Hazard touchedHazard = col.gameObject.GetComponent<Hazard>();
-        if (touchedHazard != null)
-        {
-            //Collider2D myCollider = col.GetContact
-        }
+        // Hazard touchedHazard = col.gameObject.GetComponent<Hazard>();
+        // if (touchedHazard != null)
+        // {
+        //     //Collider2D myCollider = col.GetContact
+        // }
     }
 
     public void MarkLimbAsHurt(Limb hurtLimb)
