@@ -36,7 +36,14 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         GenerateAllLimbKeys();
+        InstantiateLimbs();
 
+        AdjustGrowingUnitsMaximum(0);
+        _growingUnitsCurrent = _growingUnitsMaximum;
+    }
+
+    private void InstantiateLimbs()
+    {
         for(int i = 0, count = AllLimbKeys.Length; i < count; i++)
         {
             if(_limbMap.ContainsKey(AllLimbKeys[i]))
@@ -48,12 +55,11 @@ public class PlayerController : MonoBehaviour
             limbGameObject.transform.SetParent(_limbsParent, false);
 
             Limb newLimb = limbGameObject.GetComponent<Limb>();
+            newLimb.Player = this;
 
             _limbMap.Add(AllLimbKeys[i], newLimb);
             limbGameObject.SetActive(false);
         }
-        AdjustGrowingUnitsMaximum(0);
-        _growingUnitsCurrent = _growingUnitsMaximum;
     }
 
     private void AdjustGrowingUnitsMaximum(int additionalUnits)
@@ -220,9 +226,24 @@ public class PlayerController : MonoBehaviour
         PowerUp powerUp = col.gameObject.GetComponent<PowerUp>();
         if (powerUp != null)
         {
+            _limbGrowthRate += powerUp.LimbGrowthRateChange;
+            _limbRetractRate += powerUp.LimbRetractRateChange;
             AdjustGrowingUnitsMaximum(powerUp.BodyUnitsRewarded);
             ChangeBodyScale(powerUp.BodyUnitsRewarded);
             Destroy(powerUp.gameObject);
         }
+        
+        Hazard touchedHazard = col.gameObject.GetComponent<Hazard>();
+        if (touchedHazard != null)
+        {
+            //Collider2D myCollider = col.GetContact
+        }
+    }
+
+    public void MarkLimbAsHurt(Limb hurtLimb)
+    {
+        hurtLimb.StartRetracting();
+        _limbsToExtend.Remove(hurtLimb);
+        _limbsToRetract.Add(hurtLimb);
     }
 }
