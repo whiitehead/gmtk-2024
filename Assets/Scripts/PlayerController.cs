@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
     private int _growingUnitsCurrent = 0;
 
     private float _bodyScaleGrowthRate;
+
+    private List<Limb> _limbsToExtend = new List<Limb>();
+    private List<Limb> _limbsToRetract = new List<Limb>();
     
     private void Awake()
     {
@@ -68,14 +71,14 @@ public class PlayerController : MonoBehaviour
             // Ignore all Mouse and Joystick inputs
             if(keyCode >= KeyCode.Mouse0)
             {
-                break;
+                continue;
             }
 
             // Ignore the Windows keys
             if(keyCode == KeyCode.LeftWindows || keyCode == KeyCode.RightWindows
              || keyCode == KeyCode.LeftMeta || keyCode == KeyCode.RightMeta)
             {
-                break;
+                continue;
             }
 
             tempList.Add(keyCode);
@@ -83,6 +86,40 @@ public class PlayerController : MonoBehaviour
         AllLimbKeys = tempList.ToArray();
     }
 
+// can run once, zero, or several times per frame, depending on how many physics frames per second are set in the time settings, and how fast/slow the framerate is.
+    private void FixedUpdate()
+    {
+        if(_growingUnitsCurrent > 0)
+        {
+            foreach(Limb extendingLimb in _limbsToExtend)
+            {
+                extendingLimb.AdjustLimbLength(_limbGrowthRate);
+                extendingLimb.GrowingUnits++;
+                _growingUnitsCurrent--;
+                ChangeBodyScale(-1 * _bodyScaleGrowthRate);
+            }
+        }
+
+        for (int i = _limbsToRetract.Count - 1; i >= 0; i--)
+        {
+            Limb retractingLimb = _limbsToRetract[i];
+            retractingLimb.AdjustLimbLength(-1 * _limbRetractRate);
+            
+            if(retractingLimb.GrowingUnits > 0)
+            {
+                _growingUnitsCurrent += retractingLimb.GrowingUnits;
+                ChangeBodyScale(retractingLimb.GrowingUnits * _bodyScaleGrowthRate);
+                retractingLimb.GrowingUnits = 0;
+            }
+
+            if(retractingLimb.IsRetracted)
+            {
+                _limbsToRetract.RemoveAt(i);
+            }
+        }
+    }
+
+//Called EVERY frame
     private void Update()
     {
         HandleButtonInputs();
@@ -104,24 +141,26 @@ public class PlayerController : MonoBehaviour
 /// </summary>
     private void HandleButtonInputs()
     {
+        
+        
         // Left Click
-        if(Input.GetMouseButtonDown(0))
-        {
-            _retractButtonPressed = true;
-        }
-        else if(Input.GetMouseButtonUp(0))
-        {
-            _retractButtonPressed = false;
-        }
+        _retractButtonPressed = Input.GetMouseButton(0);
+        // if(Input.GetMouseButtonDown(0))
+        // {
+        //     _retractButtonPressed = true;
+        //     Debug.Log("_retractButtonPressed TRUE");
+        // }
+        // else if(Input.GetMouseButtonUp(0))
+        // {
+        //     _retractButtonPressed = false;
+        //     Debug.Log("_retractButtonPressed FALSE");
+        // }
 
         // Right Click
         if(Input.GetMouseButtonDown(1))
         {
             _forceRetractAllLimbs = true;
-        }
-        else if(Input.GetMouseButtonUp(1))
-        {
-            _forceRetractAllLimbs = false;
+            _retractButtonPressed = false;
         }
 
         // Note that this checks all 100+ keyboard KeyCodes every Update.
@@ -131,8 +170,14 @@ public class PlayerController : MonoBehaviour
             Limb currentLimb = _limbMap[limbKey];
             if(_forceRetractAllLimbs)
             {
-                currentLimb.StartRetracting();
-                currentLimb.AdjustLimbLength(-1 * _limbRetractRate);
+                if (!currentLimb.IsRetracting)
+                {
+                    currentLimb.StartRetracting();
+                    _limbsToRetract.Add(currentLimb);
+                }
+                
+                _limbsToExtend.Clear();
+                currentLimb.GrowingUnits = 0;
                 _growingUnitsCurrent = _growingUnitsMaximum;
                 ChangeBodyScale(_bodySizeMaximum);
                 continue;
@@ -140,40 +185,34 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetKeyDown(limbKey))
             {
+                currentLimb.ToggleHighlight(true);
+
                 if(_retractButtonPressed)
                 {
                     currentLimb.StartRetracting();
+                    _limbsToRetract.Add(currentLimb);
                 }
                 else if( _growingUnitsCurrent > 0 && (currentLimb.IsExtended || currentLimb.IsRetracted))
                 {
                     currentLimb.StartExtending(this.transform);
+                    _limbsToExtend.Add(currentLimb);
                 }
-
-                currentLimb.ToggleHighlight(true);
             }
             else if(Input.GetKeyUp(limbKey))
             {
                 currentLimb.ToggleHighlight(false);
+
                 if(currentLimb.IsExtending)
                 {
                     currentLimb.StopExtending();
+                    _limbsToExtend.Remove(currentLimb);
                 }
             }
-
-            if(currentLimb.IsExtending && _growingUnitsCurrent > 0)
-            {
-                currentLimb.AdjustLimbLength(_limbGrowthRate);
-                currentLimb.GrowingUnits++;
-                _growingUnitsCurrent--;
-                ChangeBodyScale(-1 * _bodyScaleGrowthRate);
-            }
-            else if(currentLimb.IsRetracting)
-            {
-                currentLimb.AdjustLimbLength(-1 * _limbRetractRate);
-                _growingUnitsCurrent += currentLimb.GrowingUnits;
-                ChangeBodyScale(currentLimb.GrowingUnits * _bodyScaleGrowthRate);
-                currentLimb.GrowingUnits = 0;
-            }
+        }
+        
+        if (_forceRetractAllLimbs)
+        {
+            _forceRetractAllLimbs = false;
         }
     }
 }
