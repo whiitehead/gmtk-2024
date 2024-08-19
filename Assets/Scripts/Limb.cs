@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -27,6 +28,8 @@ public class Limb : MonoBehaviour
     public bool IsRetracting => _limbState == LimbState.RETRACTING;
 
     public int GrowingUnits = 0;
+
+    [HideInInspector] public PlayerController Player;
 
     private void Awake()
     {
@@ -81,4 +84,18 @@ public class Limb : MonoBehaviour
         _limbState = LimbState.RETRACTED;
         this.gameObject.SetActive(false); //This will return the Limb to the ObjectPool
     }
+
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     if (other == null)
+    //     {
+    //         return;
+    //     }
+    //
+    //     Hazard touchedHazard = other.gameObject.GetComponent<Hazard>();
+    //     if (touchedHazard != null)
+    //     {
+    //         Player.MarkLimbAsHurt(this);
+    //     }
+    // }
 }
