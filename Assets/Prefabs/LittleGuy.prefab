@@ -938,8 +938,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _growingUnitsMaximum: 2000
-  _limbGrowthRate: 0.005
-  _limbRetractRate: 0.1
+  _limbGrowthRate: 0.05
+  _limbRetractRate: 1
   _bodySizeMaximum: 0.5
   _bodySizeMinimum: 0.1
   _limbPrefab: {fileID: 8003743324913104346, guid: 18977da270f1a4e42ba60b2ab492557a, type: 3}
