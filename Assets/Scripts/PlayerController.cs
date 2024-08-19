@@ -226,6 +226,8 @@ public class PlayerController : MonoBehaviour
         PowerUp powerUp = col.gameObject.GetComponent<PowerUp>();
         if (powerUp != null)
         {
+            _limbGrowthRate += powerUp.LimbGrowthRateChange;
+            _limbRetractRate += powerUp.LimbRetractRateChange;
             AdjustGrowingUnitsMaximum(powerUp.BodyUnitsRewarded);
             ChangeBodyScale(powerUp.BodyUnitsRewarded);
             Destroy(powerUp.gameObject);
