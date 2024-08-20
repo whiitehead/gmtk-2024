@@ -7662,8 +7662,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 0.9834348, y: -0.996593}
-  - {x: 0.7514763, y: -0.61927795}
+  - {x: 1.1153241, y: -0.3146243}
+  - {x: 0.793293, y: -0.6771774}
   - {x: 0.37700653, y: -0.6108761}
   - {x: 0.20592308, y: -0.6625252}
   - {x: 0.081707, y: -0.7273922}
@@ -24408,7 +24408,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: cedf721a27586b84c89d50f4002e9cd6, type: 3}
     - target: {fileID: 97095469161784946, guid: bcf548c90af3a4bb4aab29b8b9268b59, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 97095469161784946, guid: bcf548c90af3a4bb4aab29b8b9268b59, type: 3}
       propertyPath: m_WasSpriteAssigned
