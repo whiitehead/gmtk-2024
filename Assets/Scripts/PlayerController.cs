@@ -165,6 +165,7 @@ public class PlayerController : MonoBehaviour
         if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
             IsInIntroState = false;
+            HandleButtonInputs();
             return;
         }
 
@@ -173,6 +174,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(limbKey))
             {
                 IsInIntroState = false;
+                HandleButtonInputs();
                 return;
             }
         }
