@@ -93,6 +93,12 @@ public class PlayerController : MonoBehaviour
 
         foreach(KeyCode keyCode in allKeys)
         {
+            // Ignore the "null" key
+            if(keyCode == KeyCode.None)
+            {
+                continue;
+            }
+
             // Ignore all Mouse and Joystick inputs
             if(keyCode >= KeyCode.Mouse0)
             {
