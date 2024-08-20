@@ -6281,7 +6281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2332857126182119449, guid: f82b88d35407946788009e8edf80f4c8, type: 3}
       propertyPath: _bodySizeMinimum
-      value: 0.2
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2332857126182119449, guid: f82b88d35407946788009e8edf80f4c8, type: 3}
       propertyPath: _limbRetractRate
