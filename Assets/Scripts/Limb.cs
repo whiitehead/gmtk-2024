@@ -36,7 +36,7 @@ public class Limb : MonoBehaviour
     private void Awake()
     {
         StopRetracting();
-        // _originalColor = _limbSprite.color;
+        _originalColor = _limbSprite.color;
         _limbSpriteBaseYPosition = _limbSprite.transform.localPosition.y;
         _limbSpriteBaseXScale = _limbSprite.transform.localScale.y;
 
@@ -44,7 +44,7 @@ public class Limb : MonoBehaviour
 
     public void ToggleHighlight(bool enabled)
     {
-        // _limbSprite.color = enabled ? _highlightColor : _originalColor;
+        _limbSprite.color = enabled ? _highlightColor : _originalColor;
     }
 
     private const float LIMB_THRESHOLD = 10.24f; // I think this is cancelled out at some point when the local transform is calculated and the math mess below could be simplified.

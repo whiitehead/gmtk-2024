@@ -23824,7 +23824,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Guy: {fileID: 2060401154}
-  DefaultSize: 15
+  DefaultSize: 11
   IntroSize: 5
   ZoomSpeed: 5
   CameraSpeed: 20
