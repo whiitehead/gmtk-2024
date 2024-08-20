@@ -5,14 +5,12 @@ using UnityEngine;
 public class EventScript : MonoBehaviour
 {
     public GameObject player;
-    public GameObject screen;
-
+    public AudioSource audio;
+    
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("other");
-
-        screen.SetActive(false);    
+        audio.Play();  
 
 
     }
