@@ -21,6 +21,8 @@ public class Limb : MonoBehaviour
 
     private Color _originalColor;
     private LimbState _limbState = LimbState.RETRACTED;
+    private float _limbSpriteBaseYPosition;
+    private float _limbSpriteBaseXScale;
 
     public bool IsRetracted => _limbState == LimbState.RETRACTED;
     public bool IsExtending => _limbState == LimbState.EXTENDING;
@@ -34,14 +36,18 @@ public class Limb : MonoBehaviour
     private void Awake()
     {
         StopRetracting();
-        _originalColor = _limbSprite.color;
+        // _originalColor = _limbSprite.color;
+        _limbSpriteBaseYPosition = _limbSprite.transform.localPosition.y;
+        _limbSpriteBaseXScale = _limbSprite.transform.localScale.y;
+
     }
 
     public void ToggleHighlight(bool enabled)
     {
-        _limbSprite.color = enabled ? _highlightColor : _originalColor;
+        // _limbSprite.color = enabled ? _highlightColor : _originalColor;
     }
 
+    private const float LIMB_THRESHOLD = 10.24f; // I think this is cancelled out at some point when the local transform is calculated and the math mess below could be simplified.
     public void AdjustLimbLength(float delta)
     {
         float newLength = _limbExtension.localScale.y + delta;
@@ -52,6 +58,16 @@ public class Limb : MonoBehaviour
             StopRetracting();
         }
 
+        if (newLength < LIMB_THRESHOLD)
+        {
+            _limbSprite.transform.localPosition = new Vector3(_limbSprite.transform.localPosition.x, _limbSpriteBaseYPosition + newLength - 1, 0);
+            _limbSprite.transform.localScale = new Vector3(_limbSpriteBaseXScale, _limbSprite.transform.localScale.y, 1);
+        }
+        else
+        {
+            _limbSprite.transform.localPosition = new Vector3(_limbSprite.transform.localPosition.x, _limbSpriteBaseYPosition + (newLength + LIMB_THRESHOLD) / 2 - 1, 0);
+            _limbSprite.transform.localScale = new Vector3(newLength * _limbSpriteBaseXScale / LIMB_THRESHOLD, _limbSprite.transform.localScale.y, 1);
+        }
         _limbExtension.localScale = new Vector3(_limbExtension.localScale.x, newLength, _limbExtension.localScale.z);
     }
 

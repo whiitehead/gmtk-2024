@@ -32,11 +32,6 @@ public class FaceController : MonoBehaviour
         LookAtMouse();
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(transform.position, EyePartialLookRadius);
-    }
-
     void Blink()
     {
         foreach (var animator in _simpleAnimators)
@@ -53,6 +48,5 @@ public class FaceController : MonoBehaviour
         lookDirection.Normalize();
         lookDirection *= Mathf.Min(magnitude / EyePartialLookRadius, 1.0f); // So he won't look way off to the side when mouse is in front.
         EyeBallTransform.localPosition = new Vector3(lookDirection.x * MaxEyeMovement.x, lookDirection.y * MaxEyeMovement.y, 0);
-        
     }
 }
